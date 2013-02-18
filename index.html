@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <title>GeoMacMap</title>
+    <meta name="description" content="Demo app showing how to compose a loosely coupled mapping application using Backbone.Marionette">
+    <meta name="author" content="Dave Bouwman / DTSAgile.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>  
+    <link rel="stylesheet" type="text/css" href="./css/viewer.css" />
+</head>
+<body>
+   
+    <div class="navbar">
+        <a class="logo" href="#">
+            <img src='./images/js-viewer-logo.png' />
+        </a>
+        <div id="currentItem" class="item cursorpointer">
+            <span id="currentItemName">current fires</span>
+            <button id="show-left-panel-button2" class="transparent cursorpointer" > 
+                <img src="./images/Arrow-sans-down.png" class="drop-down-icon" />
+            </button>
+        </div>
+        <!-- This will contain the legends later on -->
+        <div id="horizontal-legend"></div>
+        <!-- These are the tools on the upper right -->
+        <div class="item right">               
+            <a href="#" id="statsButton">
+                <img src="./images/icon-stats-24px.png" />
+            </a>
+           <a href="#" id="layerListButton"> 
+                <img src="./images/icon-layers-24px.png" />
+            </a>
+            <a href="#" id="searchButton"> 
+                <img src="./images/icon-search-24px.png"  />
+           </a>
+        </div>
+    </div>
+    
+
+    <!-- The Map -->
+    <div id="map" class="claro"></div>
+
+    <!-- Container for Pseudo-modal center view lists -->
+    <div id="center-container" class="view" >
+        This will be the center view area<br/>
+        Search, search results and the <br>
+        List of years for the Historic Fires view will use this<br>
+    </div>
+
+    <div id="right-container" class="view" >
+        This is the right container<br/>
+        We will have charts or Fire Details here <br/>
+        This text is just to take space
+    </div>
+
+
+    <!-- Container for the Drop Down List of Views -->
+    <div id="item-list-container"  class="view">
+        <div class="box-content" id="feature-list-container">
+            This is where the item list goes<br/>
+            It will not change while the app is running <br/>
+            but we want it to be configurable, so it will<br/>
+            be templated<br/>
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+html, body {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 1em;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color:#FFFFFF;
+}
+
+#currentItemName {
+    font-size:1.5em;
+}
+
+.cursorpointer:hover {
+    cursor: pointer;
+}
+
+.navbar .item {
+    padding-top:10px;
+    color:rgba(255,255,255,1);
+    display: inline-block;
+    float:left;
+    background-image:none;
+}
+.drop-down-icon{
+	vertical-align:baseline;
+	width:24px;
+}
+.navbar .right {
+    float:right;
+    vertical-align:top;
+}
+
+.view {
+	  background-color: #213F65;
+	background-color: rgba(33, 63, 101, 0.85);
+	padding-left: 20px;
+  	padding-right: 20px;
+   	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+  	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+  	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+  	min-height: 50px;
+}
+#item-list-container {
+    position:absolute;
+    left:0px;
+    top:62px;
+    width:330px;
+}
+#center-container {
+    position:absolute;
+    left:0px;
+    top:30%;
+    width:80%;
+    margin-left:1.5%;
+    margin-right:2%;
+}
+#right-container {
+    position:absolute;
+    right:0px;
+    top:62px;
+    max-width:85%
+}
+
+
+
+/* NAVBAR Hacked heavily from BOOTSTRAP*/
+.navbar {
+  overflow: visible;
+  margin-bottom: 20px;
+  *z-index: 2;
+  min-height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #213F65;
+  	background-color: rgba(33, 63, 101, 0.85);
+  border: 1px solid transparent;
+ *zoom: 1;
+  position: fixed;
+  right: 0;
+  left: 0;
+   top: 0;
+  z-index: 1030;
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  box-shadow: 0 1px 10px rgba(0,0,0,.1);
+}
+.navbar:after {
+  clear: both;
+}
+.navbar .logo { 
+  float: left;
+  display: block;
+  padding: 10px 20px 15px;
+  margin-left: -20px;
+  font-size: 20px;
+  font-weight: 200;
+  color: #ffffff;
+  text-shadow: 0 1px 0 #080808;
+}
+
+button{
+	vertical-align:middle;
+}
+
+.transparent {
+background-color: rgba(0,0,0,0);
+border-color: rgba(0,0,0,0);
+background-image: none;
+}
+
