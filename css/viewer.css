@@ -1,3 +1,4 @@
+@import url(http://weloveiconfonts.com/api/?family=entypo);
 html, body {
     font-family: 'Oxygen', sans-serif;
     font-size: 1em;
@@ -6,6 +7,11 @@ html, body {
     margin: 0;
     padding: 0;
     color:#FFFFFF;
+}
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
 }
 
 #currentItemName {
@@ -31,22 +37,34 @@ html, body {
     float:right;
     vertical-align:top;
 }
+.right{
+  float:right;
+}
 
 .view {
-	  background-color: #213F65;
-	background-color: rgba(33, 63, 101, 0.85);
-	padding-left: 20px;
-  	padding-right: 20px;
-   	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-  	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-  	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-  	min-height: 50px;
+    background-color: #213F65;
+    background-color: rgba(33, 63, 101, 0.85);
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    
 }
-#item-list-container {
+#menu-container {
     position:absolute;
     left:0px;
     top:62px;
-    width:330px;
+    width:200px;
+    padding:10px 20px 10px 20px;
+}
+.menu-item{
+  padding:5px;
+  
+}
+.menu-item:hover{
+  background-color: #213F65;
+  background-color: rgba(33, 63, 101, 0.95);
 }
 #center-container {
     position:absolute;
@@ -74,7 +92,7 @@ html, body {
   padding-left: 10px;
   padding-right: 10px;
   background-color: #213F65;
-  	background-color: rgba(33, 63, 101, 0.85);
+  background-color: rgba(33, 63, 101, 0.85);
   border: 1px solid transparent;
  *zoom: 1;
   position: fixed;
@@ -110,4 +128,14 @@ background-color: rgba(0,0,0,0);
 border-color: rgba(0,0,0,0);
 background-image: none;
 }
+
+.raphael-icon {
+    font-weight: normal;
+    font-style: normal;
+    line-height: normal;
+    font-family: 'RaphaelIcons';
+    font-size: 1.4em;
+    position: relative;
+    top: 0.1em;
+}  
 

@@ -16,8 +16,8 @@
         <a class="logo" href="#">
             <img src='./images/js-viewer-logo.png' />
         </a>
-        <div id="currentItem" class="item cursorpointer">
-            <span id="currentItemName">current fires</span>
+        <div id="current-item" class="item cursorpointer">
+            <span id="current-item-name">Current Fires</span>
             <button id="show-left-panel-button2" class="transparent cursorpointer" > 
                 <img src="./images/Arrow-sans-down.png" class="drop-down-icon" />
             </button>
@@ -26,13 +26,13 @@
         <div id="horizontal-legend"></div>
         <!-- These are the tools on the upper right -->
         <div class="item right">               
-            <a href="#" id="statsButton">
+            <a href="#" id="stats-button">
                 <img src="./images/icon-stats-24px.png" />
             </a>
-           <a href="#" id="layerListButton"> 
+           <a href="#" id="layer-list-button"> 
                 <img src="./images/icon-layers-24px.png" />
             </a>
-            <a href="#" id="searchButton"> 
+            <a href="#" id="search-button"> 
                 <img src="./images/icon-search-24px.png"  />
            </a>
         </div>
@@ -43,13 +43,13 @@
     <div id="map" class="claro"></div>
 
     <!-- Container for Pseudo-modal center view lists -->
-    <div id="center-container" class="view" >
+    <div id="center-container" style="display:none;" class="view" >
         This will be the center view area<br/>
         Search, search results and the <br>
         List of years for the Historic Fires view will use this<br>
     </div>
 
-    <div id="right-container" class="view" >
+    <div id="right-container" style="display:none;" class="view" >
         This is the right container<br/>
         We will have charts or Fire Details here <br/>
         This text is just to take space
@@ -57,15 +57,48 @@
 
 
     <!-- Container for the Drop Down List of Views -->
-    <div id="item-list-container"  class="view">
-        <div class="box-content" id="feature-list-container">
-            This is where the item list goes<br/>
-            It will not change while the app is running <br/>
-            but we want it to be configurable, so it will<br/>
-            be templated<br/>
+    <div id="menu-container"  style="display:none;" class="view">
+        <div class="box-content" id="menu-item-list-container">
+            
         </div>
     </div>
 
+<!-- Templates -->
+       <script type="text/template" id="menu-list-item">
+            <div class="menu-item cursorpointer">
+                <span><%=name %></span>
+                <div class="right">  
+                    <span class="entypo-right-circled"></span>
+                </div>          
+            </div>
+    </script>  
+
+   <script type="text/javascript" src="./javascript/libs/marionette/jquery-1.9.0.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/json2.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/underscore-1.4.3.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/backbone-0.9.10.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/backbone.babysitter-0.0.4.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/backbone.wreqr-0.1.0.js"></script>
+   <script type="text/javascript" src="./javascript/libs/marionette/backbone.marionette-1.0.0-rc3.js"></script>
+
+   <script type="text/javascript" src="./javascript/ViewerApp.js"></script>
+   <script type="text/javascript" src="./javascript/MenuModule.js"></script>
+  
+   <script>
+    //TODO: Change to use dojo.addOnLoad(function{}) when we wire in Esri Map
+    $(function(){
+        //create a hash for our options that we will pass into 
+        //the app
+        var options = {
+            menuItems: [
+                    { name: 'Current Fires', eventToRaise: 'View:CurrenFires' },
+                    { name: 'Historic Fires', eventToRaise: 'View:HistoricFires' },
+                    { name: 'Fire Danger Map', eventToRaise: 'View:FireDanger' }
+                ]  
+            };
+        gmm.Viewer.start(options);
+    });
+   </script>
 
 </body>
 </html>
