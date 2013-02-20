@@ -38,9 +38,11 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     $('#current-item-name').text(name);
                 });
 
-                //hook up events to the Menu controls
-                //and simply send events out for other things to react to
-                $('#current-item').on('click', function () {
+                //The Navbar has the responsibility for everything in the 
+                //top navbar - including the click event that causes the menu
+                //to appear. The Menu Module just listens for the event
+                //and takes action
+                Viewer.vent.on('Navbar:ToggleMenu', function () {
                     if ($('#menu-container').is(':visible')) {
                         //hide 
                         Viewer.vent.trigger('Map:ShowControls');
@@ -121,6 +123,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 //raise and event and the related Module will catch it                               
                 Viewer.vent.trigger(this.model.get('eventToRaise'), this);
                 //re-show the map controls                
+                Viewer.vent.trigger('Map:ShowControls');
                 Viewer.vent.trigger('Map:ShowControls');
                 //hide the feature list
                 $('#menu-container').slideUp();

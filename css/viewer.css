@@ -54,14 +54,36 @@ html, body {
 #menu-container {
     position:absolute;
     left:0px;
-    top:62px;
+    top:54px;
     width:200px;
     padding:10px 20px 10px 20px;
 }
+
 .menu-item{
   padding:5px;
-  
 }
+#menu-widget{
+  -moz-transition: all 1s ease;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+  display:inline-block;
+}
+.rotated{
+-webkit-transform: rotate(45deg);
+
+}
+
+
+#tool-list-region ul{list-style:none;margin:0;}
+#tool-list-region li{
+  float:right;
+  margin:0 5px;
+ /* font-size:1.3em;*/
+  text-shadow: 1px 1px 0 #080808;
+}
+#tool-list-region li:hover{color:#CCCCCC;cursor:pointer;}
+#current-item-name{margin-right:5px;}
 .menu-item:hover{
   background-color: #213F65;
   background-color: rgba(33, 63, 101, 0.95);
@@ -104,19 +126,18 @@ html, body {
   -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.1);
   -moz-box-shadow: 0 1px 10px rgba(0,0,0,.1);
   box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  font-size: 1.3em;
 }
 .navbar:after {
   clear: both;
 }
 .navbar .logo { 
   float: left;
-  display: block;
-  padding: 10px 20px 15px;
-  margin-left: -20px;
-  font-size: 20px;
-  font-weight: 200;
-  color: #ffffff;
-  text-shadow: 0 1px 0 #080808;
+  padding: 10px 20px 15px 10px;
+  text-shadow: 1px 1px 0 #080808;
+  text-decoration: none;
+  /*font-size:1.3em;*/
+  color:#ffffff;
 }
 
 button{
