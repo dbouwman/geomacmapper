@@ -85,50 +85,5 @@ if (!this.gmm || typeof this.gmm !== 'object') {
           tagName: 'ul'
         });
 
-        /*var MenuListView = Backbone.Marionette.ItemView.extend({
-            el: '#menu-item-list-container',            
-            initialize: function (options) {
-                _.bindAll();
-                this.collection = options.collection;
-            },
-
-            render: function () {
-                //loop over the models in the collection
-                console.log('Starting Menu Rendering...');
-                _.each(this.collection.models, function (model) {
-                    console.log('   rendering...' + model.get('name'));
-                    //cook the view                 
-                    var vw = new MenuListItemView({ model: model });
-                    //if there were a lot of these, it would be much
-                    //better to push them into an array THEN
-                    //call .append(theArray) all at once
-                    this.$el.append(vw.render().el);
-                }, this);
-                console.log('Done Menu Rendering...');
-                return this;
-            }
-
-        });*/
-
-        /*var ToolItemView = Backbone.Marionette.ItemView.extend({
-            template: "#tool-item"
-            initialize: function (options) {
-                _.bindAll();
-                //set the template in initialize so we know the DOM is ready
-                this.template = _.template($('#menu-list-item').html());
-            },
-            events: { 'click': 'itemClicked' },
-            render: function () {
-                this.$el.append(this.template(this.model.toJSON()));
-                return this;
-            },
-            itemClicked: function () {
-                console.log('Tool Item selected ' + this.model.get('name'));
-                //raise and event and the related Module will catch it                               
-                Viewer.vent.trigger(this.model.get('eventToRaise'), this);
-            }
-
-        });*/
-
     });
 })();
