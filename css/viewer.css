@@ -51,17 +51,22 @@ html, body {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
     
 }
-#menu-container {
+
+/*-------------------------*/
+/*    DROP DOWN MENU       */
+/*-------------------------*/
+#menu-region {
     position:absolute;
     left:0px;
     top:54px;
     width:200px;
     padding:10px 20px 10px 20px;
 }
+#menu-region ul{list-style: none;padding:0;}
+#menu-region ul li {margin:10px 0;cursor:pointer;padding:5px 8px;}
+#menu-region ul li:hover {background-color: rgba(33, 63, 101, 0.95);}
 
-.menu-item{
-  padding:5px;
-}
+
 #menu-widget{
   -moz-transition: all 1s ease;
   -webkit-transition: all 0.3s ease;

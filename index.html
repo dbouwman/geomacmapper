@@ -49,21 +49,18 @@
 
 
     <!-- Container for the Drop Down List of Views -->
-    <div id="menu-container"  style="display:none;" class="view">
-        <div class="box-content" id="menu-item-list-container">
-            
-        </div>
+    <div id="menu-region"  style="display:none;" class="view">
+        
     </div>
 
-<!-- Templates -->
-       <script type="text/template" id="menu-list-item">
-            <div class="menu-item cursorpointer">
-                <span><%=name %></span>
-                <div class="right">  
-                    <span class="entypo-right-circled"></span>
-                </div>          
-            </div>
+    <!-- Templates -->
+    <script type="text/template" id="menu-list-item-template">
+        <span><%=name %></span>
+        <div class="right">  
+            <span class="entypo-right-circled"></span>
+        </div>          
     </script>  
+
     <script id="tool-template" type="text/template">
         <span class='<%=iconclass%>' > </span>
     </script>
@@ -85,18 +82,18 @@
     $(function(){
         //create a hash for our options that we will pass into 
         //the app
-        var options = {
-            menuItems: [
-                    { name: 'Current Fires', eventToRaise: 'View:CurrenFires' },
-                    { name: 'Historic Fires', eventToRaise: 'View:HistoricFires' },
-                    { name: 'Fire Danger Map', eventToRaise: 'View:FireDanger' }
-                ],
-            toolItems: [
-                    {name: 'Search', eventToRaise: 'View:Search', iconclass: 'entypo-search'},
-                    {name: 'Stats', eventToRaise: 'View:Stats', iconclass: 'entypo-chart-bar'},
-                    {name: 'Layer List', eventToRaise: 'View:LayerList', iconclass: 'entypo-map'},
-                ]  
-            };
+var options = {
+    menuItems: [
+        { name: 'Current Fires', eventToRaise: 'View:CurrenFires' },
+        { name: 'Historic Fires', eventToRaise: 'View:HistoricFires' },
+        { name: 'Fire Danger Map', eventToRaise: 'View:FireDanger' }
+    ],
+    toolItems: [
+        {name: 'Search', eventToRaise: 'View:Search', iconclass: 'entypo-search'},
+        {name: 'Stats', eventToRaise: 'View:Stats', iconclass: 'entypo-chart-bar'},
+        {name: 'Layer List', eventToRaise: 'View:LayerList', iconclass: 'entypo-map'},
+    ]  
+};
         gmm.Viewer.start(options);
     });
    </script>

@@ -7,9 +7,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
     gmm.Viewer = new Backbone.Marionette.Application();
 
     gmm.Viewer.addRegions({
-        toolsRegion: '#tool-list-region'
-        
-
+        toolsRegion: '#tool-list-region',
+        menuRegion: '#menu-region'
     });    
 
     //debugging so we can see events flying around
