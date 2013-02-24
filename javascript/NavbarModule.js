@@ -47,7 +47,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     $('#current-item-name').text(name);
                 });  
                            
-                Viewer.vent.on('Navbar:ShowMenu', function (name) {
+               /* Viewer.vent.on('Navbar:ShowMenu', function (name) {
                     console.log('NavbarController caught Navbar:ShowMenu');
                     //change the displayed value in the ui
                     $('#current-item-name').text(name);
@@ -56,7 +56,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     console.log('NavbarController caught Navbar:HideMenu');
                     //change the displayed value in the ui
                     $('#current-item-name').text(name);
-                });               
+                });     */          
             }
         });
 

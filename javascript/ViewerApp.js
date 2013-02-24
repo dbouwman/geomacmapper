@@ -8,7 +8,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 
     gmm.Viewer.addRegions({
         toolsRegion: '#tool-list-region',
-        menuRegion: '#menu-region'
+        menuRegion: '#menu-region',
+        layerListRegion: '#layer-list-region'
     });    
 
     //debugging so we can see events flying around

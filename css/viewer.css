@@ -7,6 +7,7 @@ html, body {
     margin: 0;
     padding: 0;
     color:#FFFFFF;
+    text-shadow: 1px 1px 0 #080808;
 }
 
 /* entypo */
@@ -40,6 +41,7 @@ html, body {
 .right{
   float:right;
 }
+.clear {clear:both;}
 
 .view {
     background-color: #213F65;
@@ -101,10 +103,10 @@ html, body {
     margin-left:1.5%;
     margin-right:2%;
 }
-#right-container {
+#layer-list-region {
     position:absolute;
     right:0px;
-    top:62px;
+    top:54px;
     max-width:85%
 }
 
@@ -164,4 +166,13 @@ background-image: none;
     position: relative;
     top: 0.1em;
 }  
+/*==========================*/
+/*        Layer List        */
+/*==========================*/
+#layer-list-region ul {list-style:none;padding:0;margin:5px 0;}
+#layer-list-region h4 {margin:0;}
+.span2{width:250px;float:left;}
+
+.header span {float:right;margin-top:20px;}
+.header h3 {float:left;}
 
