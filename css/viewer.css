@@ -78,7 +78,6 @@ html, body {
 }
 .rotated{
 -webkit-transform: rotate(45deg);
-
 }
 
 
@@ -95,13 +94,9 @@ html, body {
   background-color: #213F65;
   background-color: rgba(33, 63, 101, 0.95);
 }
-#center-container {
-    position:absolute;
-    left:0px;
-    top:30%;
+#center-region {
     width:80%;
-    margin-left:1.5%;
-    margin-right:2%;
+    margin:150px auto 0 auto;
 }
 #layer-list-region {
     position:absolute;
@@ -175,4 +170,36 @@ background-image: none;
 
 .header span {float:right;margin-top:20px;}
 .header h3 {float:left;}
+
+.box-content {clear:both;padding-bottom: 20px;}
+.box-content button {font-size:24px;vertical-align: top;}
+
+/*==========================*/
+/*    Geocode Search        */
+/*==========================*/
+#geocode-results-region ul{list-style: none;}
+#geocode-results-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
+#geocode-results-region li:hover {color:#FF0000;}
+
+
+#search-textbox{width:90%;font-size:24px;}
+/*--------------------------*/
+/* SPINNER USING CSS3       */
+/*--------------------------*/
+.spin {
+    -webkit-animation-name: spinnerRotate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes spinnerRotate {
+  from {
+    -webkit-transform:rotate(0deg);
+  }
+  to {
+    -webkit-transform:rotate(360deg);
+  }
+}
+
 

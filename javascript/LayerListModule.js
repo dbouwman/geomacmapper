@@ -50,7 +50,11 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 //hook up App events to show/hide the panel          
                 Viewer.vent.on('View:LayerList', function (name) {
                     console.log('LayerListController caught View:LayerList');
-                    $('#layer-list-region').show();
+                    if( $('#layer-list-region').is(':visible') ){
+                        $('#layer-list-region').hide();
+                    }else{
+                        $('#layer-list-region').show();
+                    }   
                 });
                 Viewer.vent.on('View:LayerList:Hide',function(){
                     $('#layer-list-region').hide();
@@ -106,15 +110,16 @@ if (!this.gmm || typeof this.gmm !== 'object') {
         //------- LAYOUT - Parent View
         var LayerListLayoutView = Backbone.Marionette.Layout.extend({
           template: "#layer-list-template",
-          events:{'click #layer-list-close':'closeView'},
+          //define the regions using selectors for nodes
+          //inside the layout's template
           regions: {
             layerListRegion: "#layer-list",
             basemapRegion: "#basemap-list"
           },
+          events:{'click #layer-list-close':'closeView'},
           closeView:function(){
             Viewer.vent.trigger('View:LayerList:Hide');       
           }
-
         });
     });
 })();
