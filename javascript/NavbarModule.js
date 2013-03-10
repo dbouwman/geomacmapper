@@ -24,9 +24,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
         //==================================
         var Controller = Backbone.Marionette.Controller.extend({
             initialize: function (options) {
-                _.bindAll();
+                _.bindAll(this);
                 this.region = options.region;
-                console.log('NavbarModule:Controller:initialize');
                 //convert tools array to a collection
                 this.collection = new ToolItemCollection(options.toolItems);
                 //create the list view and pass in the collection
@@ -37,7 +36,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 
                 $('#current-item').on('click', function () {
                     Viewer.vent.trigger('Navbar:ToggleMenu');
-                    $('#menu-widget').toggleClass('rotated');                              
+                    Mod.controller.toggleIcon();                             
                 });
 
                 //hook up App events            
@@ -45,18 +44,11 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     console.log('NavbarController caught Navbar:ChangeItemName');
                     //change the displayed value in the ui
                     $('#current-item-name').text(name);
-                });  
-                           
-               /* Viewer.vent.on('Navbar:ShowMenu', function (name) {
-                    console.log('NavbarController caught Navbar:ShowMenu');
-                    //change the displayed value in the ui
-                    $('#current-item-name').text(name);
-                }); 
-                 Viewer.vent.on('Navbar:HideMenu', function (name) {
-                    console.log('NavbarController caught Navbar:HideMenu');
-                    //change the displayed value in the ui
-                    $('#current-item-name').text(name);
-                });     */          
+                });     
+                Viewer.vent.on('Navbar:ToggleIcon', this.toggleIcon,this)   
+            },
+            toggleIcon:function(){
+                $('#menu-widget').toggleClass('rotated');
             }
         });
 

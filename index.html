@@ -92,7 +92,7 @@
         <span> <%= name %></span>
     </script>   
 
-
+    <!-- Search/Geocode Templates -->
     <script type="text/template" id="search-layout-template">
         <div class="header">
             <h3>Address Locator</h3>
@@ -104,7 +104,6 @@
             <div id="geocode-results-region"></div>
             <div class="clear"></div>
          </div>
-         
      </script>
     
     <script type="text/template" id="no-locations-template">
@@ -116,6 +115,20 @@
           <%=name%>   
     </script>
 
+    <!-- Historic Fires Selection Templates -->
+    <script type="text/template" id="year-layout-template"> 
+        <div class="header">
+            <h3>Select a Year to View</h3>
+            <span id="years-close" class="entypo-cancel-circled"></span>
+        </div>  
+         <div class="box-content"> 
+            <div id="year-list-region"></div>
+            <div class="clear"></div>
+         </div>
+    </script>
+    <script type="text/template" id="year-item-template">        
+          <%=name%>
+    </script>
 
     <!-- Libraries -->
     <script type="text/javascript" src="./javascript/libs/marionette/jquery-1.9.0.js"></script>
@@ -132,6 +145,8 @@
     <script type="text/javascript" src="./javascript/MenuModule.js"></script>
     <script type="text/javascript" src="./javascript/LayerListModule.js"></script>
     <script type="text/javascript" src="./javascript/EsriGeocodeSearchModule.js"></script>  
+    <script type="text/javascript" src="./javascript/HistoricFiresModule.js"></script> 
+    <script type="text/javascript" src="./javascript/CurrentFiresModule.js"></script>
   <!-- Configuration and Launch -->
    <script>
     //TODO: Change to use dojo.addOnLoad(function{}) when we wire in Esri Map
@@ -140,7 +155,7 @@
         //the app
 var options = {
     menuItems: [
-        { name: 'Current Fires', eventToRaise: 'View:CurrenFires' },
+        { name: 'Current Fires', eventToRaise: 'View:CurrentFires' },
         { name: 'Historic Fires', eventToRaise: 'View:HistoricFires' },
         { name: 'Fire Danger Map', eventToRaise: 'View:FireDanger' }
     ],
@@ -192,21 +207,27 @@ var options = {
             }
         ] 
     },
-    historyConfig:{
+    currentFiresConfig:{
         mapServiceUrl:'http://wildfire.cr.usgs.gov/ArcGIS/rest/services/geomac_dyn/MapServer',
-        perimetersConfig: {
-            layerId: 5,
-            yearField: 'year_'
-        },
+        settings: {
+            name:'Current Fires',
+            layerId:0,
+            perimeterLayerId:1,
+            defn:''
+        }
+    },
+    historicFiresConfig:{
+        mapServiceUrl:'http://wildfire.cr.usgs.gov/ArcGIS/rest/services/geomac_dyn/MapServer',
         years: [
-            {name:2012, layerId:7},
-            {name:2011, layerId:8},
-            {name:2010, layerId:9},
-            {name:2009, layerId:10},
-            {name:2008, layerId:11},
-            {name:2007, layerId:12},
-            {name:2006, layerId:13},
-            {name:2005, layerId:14}
+            {name:'2013 Fires', layerId:4,  perimeterLayerId:5, defn:'year_=2013'},
+            {name:'2012 Fires', layerId:7,  perimeterLayerId:5, defn:'year_=2012'},
+            {name:'2011 Fires', layerId:8,  perimeterLayerId:5, defn:'year_=2011'},
+            {name:'2010 Fires', layerId:9,  perimeterLayerId:5, defn:'year_=2010'},
+            {name:'2009 Fires', layerId:10, perimeterLayerId:5, defn:'year_=2009'},
+            {name:'2008 Fires', layerId:11, perimeterLayerId:5, defn:'year_=2008'},
+            {name:'2007 Fires', layerId:12, perimeterLayerId:5, defn:'year_=2007'},
+            {name:'2006 Fires', layerId:13, perimeterLayerId:5, defn:'year_=2005'},
+            {name:'2005 Fires', layerId:14, perimeterLayerId:5, defn:'year_=2005'}
         ]
     }
 };

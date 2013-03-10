@@ -23,7 +23,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
         //==================================
         var Controller = Backbone.Marionette.Controller.extend({
             initialize: function (options) {
-                _.bindAll();
+                _.bindAll(this);
                 
                 console.log('LayerListMobule:Controller:initialize');
                 this.region = options.region;
@@ -47,19 +47,37 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 this.layout.layerListRegion.show(this.layersView);
                 this.layout.basemapRegion.show(this.basemapView);
 
-                //hook up App events to show/hide the panel          
-                Viewer.vent.on('View:LayerList', function (name) {
+                //hook up App events to show/hide the panel 
+
+                Viewer.vent.on('View:LayerList', this.showView);
+                Viewer.vent.on('View:LayerList:hide', this.hideView);
+
+                /*Viewer.vent.on('View:LayerList', function (name) {
                     console.log('LayerListController caught View:LayerList');
                     if( $('#layer-list-region').is(':visible') ){
-                        $('#layer-list-region').hide();
+                        this.region.$el.fadeOut('fast');
                     }else{
-                        $('#layer-list-region').show();
+                        this.region.$el.fadeIn('fast');
                     }   
                 });
                 Viewer.vent.on('View:LayerList:Hide',function(){
-                    $('#layer-list-region').hide();
-                });
+                    //$('#layer-list-region').hide();
+                    this.region.$el.fadeOut('fast');
+                });*/
+            },
+            showView:function(){
+                console.log('Showing LayerListView...');
+                //this.layout = new YearLayout();
+                //this.region.show(this.layout);
+                //this.layout.listRegion.show(new YearListView({collection:this.years}));
+                this.region.$el.fadeIn('fast');
+                
+            },
+            hideView:function(){
+                console.log('Hiding LayerListView');
+                this.region.$el.fadeOut('fast');
             }
+
         });
 
 
@@ -117,8 +135,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             basemapRegion: "#basemap-list"
           },
           events:{'click #layer-list-close':'closeView'},
-          closeView:function(){
-            Viewer.vent.trigger('View:LayerList:Hide');       
+          closeView:function(){  
+            Mod.controller.hideView();
           }
         });
     });

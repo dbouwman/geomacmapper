@@ -166,6 +166,7 @@ background-image: none;
 /*==========================*/
 #layer-list-region ul {list-style:none;padding:0;margin:5px 0;}
 #layer-list-region h4 {margin:0;}
+#basemap-list,#layer-list{margin-bottom:20px;} 
 .span2{width:250px;float:left;}
 
 .header span {float:right;margin-top:20px;}
@@ -180,9 +181,17 @@ background-image: none;
 #geocode-results-region ul{list-style: none;}
 #geocode-results-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
 #geocode-results-region li:hover {color:#FF0000;}
-
-
 #search-textbox{width:90%;font-size:24px;}
+
+/*==========================*/
+/*    Historic Fires        */
+/*==========================*/
+#year-list-region ul{list-style: none;}
+#year-list-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
+#year-list-region li:hover {color:#FF0000;}
+
+
+
 /*--------------------------*/
 /* SPINNER USING CSS3       */
 /*--------------------------*/

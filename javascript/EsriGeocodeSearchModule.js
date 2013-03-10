@@ -5,10 +5,10 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 //==================================
 // EsriGeocodeSearchModule
 // This shows the search ui, does the search
-// then hands off the results as a collection
-// to another module which handles display.
-// this allows the search to be replaces with the
-// minimal impact on the application
+// raises an event to Center the map at the
+// location OR shows a list with the options
+// for disambiguation, which will raise
+// the same event if/when clicked
 //==================================
 (function () {
     'use strict';
