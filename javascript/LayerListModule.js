@@ -94,8 +94,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             tagName: 'li', 
             events: {'click': 'itemClicked'},
             itemClicked: function(){
-                console.log('BaseMapItemClicked: '+ this.model.get('name'));
-                var options = { label: this.model.get('name')};
+                console.log('BaseMapItemClicked: '+ this.model.get('label'));
+                var options = { label: this.model.get('label')};
                 Viewer.vent.trigger('Map:SetBasemap', options);
             }      
         });

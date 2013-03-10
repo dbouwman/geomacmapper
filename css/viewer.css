@@ -63,6 +63,7 @@ html, body {
     top:54px;
     width:200px;
     padding:10px 20px 10px 20px;
+    z-index:901;
 }
 #menu-region ul{list-style: none;padding:0;}
 #menu-region ul li {margin:10px 0;cursor:pointer;padding:5px 8px;}
@@ -95,14 +96,20 @@ html, body {
   background-color: rgba(33, 63, 101, 0.95);
 }
 #center-region {
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-40%;
+    margin-top:-10%;
     width:80%;
-    margin:150px auto 0 auto;
+    z-index:900;
 }
 #layer-list-region {
     position:absolute;
     right:0px;
     top:54px;
-    max-width:85%
+    max-width:85%;
+    z-index:900;
 }
 
 
@@ -138,7 +145,6 @@ html, body {
   padding: 10px 20px 15px 10px;
   text-shadow: 1px 1px 0 #080808;
   text-decoration: none;
-  /*font-size:1.3em;*/
   color:#ffffff;
 }
 
@@ -152,15 +158,6 @@ border-color: rgba(0,0,0,0);
 background-image: none;
 }
 
-.raphael-icon {
-    font-weight: normal;
-    font-style: normal;
-    line-height: normal;
-    font-family: 'RaphaelIcons';
-    font-size: 1.4em;
-    position: relative;
-    top: 0.1em;
-}  
 /*==========================*/
 /*        Layer List        */
 /*==========================*/
@@ -190,7 +187,12 @@ background-image: none;
 #year-list-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
 #year-list-region li:hover {color:#FF0000;}
 
-
+/*==========================*/
+/*        Esri Map          */
+/*==========================*/
+#map{padding:0;height:100%;z-index:-1;overflow:hidden;}
+#map_zoom_slider{position:absolute;top:70px;left:20px;}
+.esriAttribution{display:none; }
 
 /*--------------------------*/
 /* SPINNER USING CSS3       */

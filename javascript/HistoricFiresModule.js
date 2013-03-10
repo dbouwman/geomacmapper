@@ -31,6 +31,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 this.options = options;
                 console.log('HistoricFiresModule:Controller:initialize');
                 this.years = new YearCollection(options.config.years);
+                this.url = options.config.url;
 
                 //hook up App events            
                 Viewer.vent.on('View:HistoricFires', this.showView, this);
@@ -65,7 +66,10 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             events: {'click': 'itemClicked'},
             itemClicked: function(){
                 console.log('YearItemClicked: '+ this.model.get('name'));
-                Viewer.vent.trigger('Map:FireLayer:ConfigChanged', this.model.toJSON());
+                var data ={
+                    model:this.model.toJSON(),
+                    url:Mod.controller.url};
+                Viewer.vent.trigger('FireLayer:ConfigChanged', data);
                 Viewer.vent.trigger('Navbar:ChangeItemName',this.model.get('name'));
                 //hide the view
                 Mod.controller.hideView();
