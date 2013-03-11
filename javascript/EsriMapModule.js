@@ -108,21 +108,22 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 
             initBaseLayers: function (basemaps) {
                 console.log('Map:Controller:initBaseLayers');
-                var me = this;
-                for (var i = 0; i < basemaps.length; i++) {
-                    var layer = basemaps[i];
-                    if (layer.type == 'ArcGISTiledMapServiceLayer') {
-                        var lyr = new esri.layers.ArcGISTiledMapServiceLayer(layer.url,
-                            {
-                                id: 'basemap_' + layer.label,
-                                visible: layer.visible
-                            });
-                      
-                        //add to the map                
-                        me.map.addLayer(lyr);
+                _.each(basemaps, function(layer){
+                    switch(layer.type){
+                        case 'ArcGISTiledMapServiceLayer':
+                            var lyr = new esri.layers.ArcGISTiledMapServiceLayer(layer.url,
+                                {
+                                    id: 'basemap_' + layer.label,
+                                    visible: layer.visible
+                                });
+                            
+                            this.map.addLayer(lyr);
+                            break;
+                        default: 
+                            alert(layer.type ' layers not currently supported for basemaps');
+                            break;
                     }
-                }
-
+                },this);
             },
 
             initOperationalLayers: function (operationalLayers) {
@@ -145,6 +146,9 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                             break;
                         case 'ArcGISImageServiceLayer':
                             alert('ArcGISImageServiceLayers not currently supported');
+                            break;
+                        default:
+                            alert(layer.type ' layers not currently supported.');
                             break;
                     }
                 }, this);
