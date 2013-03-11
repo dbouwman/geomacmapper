@@ -68,34 +68,25 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             },
 
 			setLayerVisibility: function (data) {
-                // Set Visibility of image layers too
-                //this.preMapDebugging(data, 'Map:SetLayerVisibility');
                 var lyr = this.map.getLayer(data.label);
                 if (lyr) {
                     lyr.setVisibility(data.visible);
                 } else {
                     console.log('Configuration Error: Layer ' + data.label);
                 }
-                /*_.each(this.config.operationalLayers, function (layer) {
-                    if (layer.label == data.label) {
-                        layer.visible = data.visible;
-                    }
-                }, this);*/
 
             },
             setBaseMap: function (data) {
-            	
                 _.each(this.config.mapConfig.basemaps, function (layer) {
                     var lyr = this.map.getLayer("basemap_"+layer.label);
                     
                     if (layer.label == data.label) {
                         lyr.setVisibility(true);
-                        layer.visible = true;
+                        
                     } else {
                         lyr.setVisibility(false);
-                        layer.visible = false;
+                        
                     }
-                    
                 }, this);
             },
 
@@ -159,6 +150,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 }, this);
                 console.log('Done adding operational layers to the map');
             }, 
+
             onMapLoad: function (map) {
                 $(window).resize(this.resizeMap);
             },

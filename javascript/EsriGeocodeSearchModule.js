@@ -64,15 +64,20 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     },
                     dataType: 'json',
                     success: this.geocodeResultsHandler ,
-                    error: function (jqXHR, status, error) {
-                        debugger;
-                    },
+                    error: this.geocodeError,
                     complete: this.geocodeComplete
                 })
             },
             
             geocodeComplete:function(){
                 this.layout.hideSpinner();
+            },
+
+            geocodeError:function(jqXHR,status,error){
+                //replace this will better logging and
+                //an informative message for production code
+                console.log('Error running the geocode.');
+
             },
 
             geocodeResultsHandler:function(data,status,jqXHR){
