@@ -13,26 +13,21 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             console.log('RouterModule starting up...')
             //Create a new Router
             Mod.router = new Router();
-            //TODO: Set this up via the configuration
+            //start history
             Backbone.history.start({pushState: false, root:options.appRoot});
         });
-        
 
         var Router = Backbone.Marionette.AppRouter.extend({
             initialize: function(options){
-                console.log('Router initialize called');
                  //Allow other parts of the app to update the url by raising an event
-                Viewer.vent.on('Router:Navigate', this.setUrl);
+                Viewer.vent.on('Router:SetUrl', this.setUrl);
             },
 
             setUrl: function(data){
-                
-                console.log('RouterModule caught Router.Navigate: data: ' + data.x + ' '+ data.y + ' ' + data.l);
                 //round to two decimals
                 data.x = Math.round(data.x * 100)/100;
                 data.y = Math.round(data.y * 100)/100;
-                var urlFragment = 'map/'+data.x+'/'+data.y+'/'+data.l;
-                console.log(urlFragment);
+                var urlFragment = 'map/'+data.x+'/'+data.y+'/'+data.l;  
                 Mod.router.navigate(urlFragment, {trigger:false});
                
             },

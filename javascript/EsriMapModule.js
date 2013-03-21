@@ -128,9 +128,9 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 var center = this.map.geographicExtent.getCenter();
                 var level = this.map.getLevel();
                 var data = {x:center.x, y:center.y, l: level};
-                console.log('EsriMapModule: Extent updated - calling Router:Navigate with ' + data.x + ' ' +data.y);
+                console.log('EsriMapModule: Extent updated - calling Router:SetUrl with ' + data.x + ' ' +data.y);
                 //raise an event which keeps the map decoupled from the router
-                Viewer.vent.trigger('Router:Navigate',data);
+                Viewer.vent.trigger('Router:SetUrl',data);
             },
             initBaseLayers: function (basemaps) {
                 console.log('Map:Controller:initBaseLayers');
