@@ -152,6 +152,7 @@
     <script type="text/javascript" src="./javascript/HistoricFiresModule.js"></script> 
     <script type="text/javascript" src="./javascript/CurrentFiresModule.js"></script>
     <script type="text/javascript" src="./javascript/EsriMapModule.js"></script>
+    <script type="text/javascript" src="./javascript/RouterModule.js"></script>
     <script type="text/javascript" src="./javascript/FireManagerModule.js"></script>
   <!-- Configuration and Launch -->
 <script>
@@ -242,7 +243,8 @@ var options = {
             {name:'2006 Fires', layerId:13, perimeterLayerId:5, defn:'year_=2005'},
             {name:'2005 Fires', layerId:14, perimeterLayerId:5, defn:'year_=2005'}
         ]
-    }
+    },
+    appRoot:'marionette-map'
 };
         gmm.Viewer.start(options);
     });

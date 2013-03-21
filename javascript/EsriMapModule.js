@@ -38,6 +38,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 //hook up App events            
                 Viewer.vent.on('Map:FireLayer:DataChanged', this.updateFireLayer, this);
                 Viewer.vent.on('Map:CenterAt', this.centerAt, this);
+                Viewer.vent.on('Map:CenterAtAndZoom', this.centerAtAndZoom, this);
+                Viewer.vent.on('Map:CenterAtLatLongAndZoom', this.centerAtLatLongAndZoom, this);
                 Viewer.vent.on('Map:SetLayerVisibility',this.setLayerVisibility,this);
                 Viewer.vent.on('Map:SetBasemap',this.setBaseMap,this);
                 Viewer.vent.on('Map:HideControls',this.hideControls,this);
@@ -57,15 +59,30 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             },
             centerAt:function(data){
             	console.log('Map:CenterAt Caught');
-            	console.dir(data);
-            	var pt = new esri.geometry.Point({x: data.x, y: data.y,spatialReference: {wkid:102100 } });
-            	if(this.map.getLevel() < 9){
-            		this.map.centerAndZoom(pt,9);
+                var lvl = this.map.getLevel();
+            	if(lvl < 9){
+            		data.l = 9;
 		        }else{
-		        	this.map.centerAt(pt);
-		        }
+                    data.l = lvl;
+                }
+                this.centerAtAndZoom(data);
             	
             },
+            centerAtAndZoom:function(data){ // assume webmercator
+                console.log('Map:CenterAtAndZoom Caught');
+                console.dir(data);
+                var pt = new esri.geometry.Point({x: data.x, y: data.y,spatialReference: {wkid:102100 } });
+                this.map.centerAndZoom(pt,data.l);
+            },
+
+            centerAtLatLongAndZoom:function(data){ //assume geographic
+                //we could pass along the SR, or a wkid, but that seems like "leakage" to me...
+                console.log('Map:centerAtLatLongAndZoom Caught');
+                console.dir(data);
+                var pt = new esri.geometry.Point({x: data.x, y: data.y,spatialReference: {wkid:4326 } });
+                this.map.centerAndZoom(pt,data.l);
+            },
+
 
 			setLayerVisibility: function (data) {
                 var lyr = this.map.getLayer(data.label);
@@ -94,18 +111,27 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 console.log('Map:Controller:initMap');
 
                 var initialExtent = new esri.geometry.Extent(mapConfig.initialExtent);
-
-                
+               
                 this.map = new esri.Map("map", {
                     extent: initialExtent,
                     maxZoom: 15
                  });
 
                 dojo.connect(this.map, 'onLoad', this.onMapLoad);
+                dojo.connect(this.map, 'onZoomEnd', this.updateUrl);
+                dojo.connect(this.map, 'onPanEnd', this.updateUrl);
                 this.initBaseLayers(mapConfig.basemaps);
                 this.initOperationalLayers(mapConfig.operationalLayers);
             },
-
+            updateUrl: function(){
+                //fires when the extent is updated
+                var center = this.map.geographicExtent.getCenter();
+                var level = this.map.getLevel();
+                var data = {x:center.x, y:center.y, l: level};
+                console.log('EsriMapModule: Extent updated - calling Router:Navigate with ' + data.x + ' ' +data.y);
+                //raise an event which keeps the map decoupled from the router
+                Viewer.vent.trigger('Router:Navigate',data);
+            },
             initBaseLayers: function (basemaps) {
                 console.log('Map:Controller:initBaseLayers');
                 _.each(basemaps, function(layer){
@@ -120,7 +146,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                             this.map.addLayer(lyr);
                             break;
                         default: 
-                            alert(layer.type ' layers not currently supported for basemaps');
+                            alert(layer.type + ' layers not currently supported for basemaps');
                             break;
                     }
                 },this);
@@ -148,7 +174,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                             alert('ArcGISImageServiceLayers not currently supported');
                             break;
                         default:
-                            alert(layer.type ' layers not currently supported.');
+                            alert(layer.type + ' layers not currently supported.');
                             break;
                     }
                 }, this);
