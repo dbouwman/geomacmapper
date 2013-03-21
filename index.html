@@ -22,7 +22,11 @@
         </a>
         <div id="current-item" class="item cursorpointer">
             <span id="current-item-name">Current Fires</span>
-            <span id="menu-widget" class='entypo-plus-circled'></span>
+            <span id="menu-widget" class="entypo-plus-circled"></span>
+            <span id="feedback" style="display:none">
+                <div id="working" class="entypo-cw spin" ></div>
+                <span id="actions" class="small">doing work loading...</span>
+            </span>
         </div>
         <!-- This will contain the legends later on -->
         <div id="horizontal-legend-region"></div>
@@ -154,11 +158,13 @@
     <script type="text/javascript" src="./javascript/EsriMapModule.js"></script>
     <script type="text/javascript" src="./javascript/RouterModule.js"></script>
     <script type="text/javascript" src="./javascript/FireManagerModule.js"></script>
+    <script type="text/javascript" src="./javascript/FeedbackModule.js"></script>
   <!-- Configuration and Launch -->
 <script>
     //TODO: Change to use dojo.addOnLoad(function{}) when we wire in Esri Map
     //$(function(){
 dojo.require('esri.map');
+dojo.require('esri.layers.FeatureLayer');
 
 dojo.addOnLoad(function(){
         //create a hash for our options that we will pass into 

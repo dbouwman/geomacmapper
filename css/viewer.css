@@ -148,6 +148,9 @@ html, body {
   color:#ffffff;
 }
 
+#working{display: inline-block;margin-left:10px;}
+.small{font-size: 0.5em;}
+
 button{
 	vertical-align:middle;
 }
@@ -197,6 +200,7 @@ background-image: none;
 /*--------------------------*/
 /* SPINNER USING CSS3       */
 /*--------------------------*/
+
 .spin {
   -webkit-animation-name: spinnerRotate;
   -webkit-animation-duration: 2s;

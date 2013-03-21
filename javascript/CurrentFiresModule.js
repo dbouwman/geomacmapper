@@ -36,7 +36,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     url:this.options.url
                 };
                 Viewer.vent.trigger('FireLayer:ConfigChanged', data);
-                Viewer.vent.trigger('Menu:ChangeViewName',this.options.model.name);
+                Viewer.vent.trigger('Navbar:ChangeItemName',this.options.model.name);
                 
             }   
         });

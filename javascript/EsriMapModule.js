@@ -44,7 +44,43 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 Viewer.vent.on('Map:SetBasemap',this.setBaseMap,this);
                 Viewer.vent.on('Map:HideControls',this.hideControls,this);
                 Viewer.vent.on('Map:ShowControls',this.showControls,this);
+                Viewer.vent.on('Map:ShowFires',this.showFires,this);
                 this.initMap(this.config.mapConfig);
+            },
+            showFires:function(featureArray){
+                
+                //remove the firelayer if it's in the map
+                var lyr = this.map.getLayer("fireLayer");
+                if(lyr){
+                    this.map.removeLayer(lyr);
+                }
+                //setup the definition for the layer
+                //this includes the renderer
+                var layerDefinition = this.getFireLayerDefinition();
+                var featureCollection = {
+                  layerDefinition: layerDefinition,
+                  featureSet: {
+                    "geometryType": "esriGeometryPoint",
+                    "features":featureArray
+                    }
+                };
+                //create the feature layer...
+                var fireLayer = new esri.layers.FeatureLayer(featureCollection, {
+                  mode: esri.layers.FeatureLayer.MODE_SNAPSHOT,
+                  id: "fireLayer",
+                  visible:true
+                });
+                //hover handler
+                dojo.connect(fireLayer, "onMouseOver",function(evt){
+                    //raise an event with the attributes so another view can
+                    //handle displaying the details
+                    console.log('Hovering on ' + evt.graphic.attributes['fire_name']);
+                });
+                this.map.addLayer(fireLayer);
+                console.log("Added fireLayer to the map with "+ featureArray.length + " features");
+                Viewer.vent.trigger("Feedback:Hide");
+
+
             },
             hideControls:function(){
             	$('#map_zoom_slider').fadeOut('fast');
@@ -192,6 +228,81 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 } else {
                     console.error('MapModule:Controller:resizeMap map is undefined');
                 }
+            },
+
+            getFireLayerDefinition: function(){
+                var defn = {
+                  "geometryType": "esriGeometryPoint",
+                  "objectIdField": "objectid",
+                  "spatialReference":{"wkid":102100},
+                  "drawingInfo": {
+                    "renderer": {
+                      "type": "simple",
+                      "symbol": {
+                        "type": "esriPMS",
+                        "url": "images/icon28-active.png",
+                        "contentType": "image/png",
+                        "width": 15,
+                        "height": 15
+                      }
+                    }
+                  },
+                  "fields":[
+                      {
+                         "name":"objectid",
+                         "type":"esriFieldTypeOID",
+                         "alias":"objectid"
+                      },
+                      {
+                         "name":"fire_name",
+                         "type":"esriFieldTypeString",
+                         "alias":"fire_name",
+                         "length":30
+                      },
+                      {
+                         "name":"start_date",
+                         "type":"esriFieldTypeString",
+                         "alias":"start_date",
+                         "length":18
+                      },
+                      {
+                         "name":"start_hour",
+                         "type":"esriFieldTypeString",
+                         "alias":"start_hour",
+                         "length":4
+                      },
+                      {
+                         "name":"location",
+                         "type":"esriFieldTypeString",
+                         "alias":"location",
+                         "length":80
+                      },
+                      {
+                         "name":"inc_type",
+                         "type":"esriFieldTypeString",
+                         "alias":"inc_type",
+                         "length":3
+                      },
+                      {
+                         "name":"cause",
+                         "type":"esriFieldTypeString",
+                         "alias":"cause",
+                         "length":1
+                      },
+                      {
+                         "name":"area_",
+                         "type":"esriFieldTypeDouble",
+                         "alias":"area_"
+                      },
+                      {
+                         "name":"area_meas",
+                         "type":"esriFieldTypeString",
+                         "alias":"area_meas",
+                         "length":10
+                      }]
+                }; 
+                return defn;
+
             }
         });
 
