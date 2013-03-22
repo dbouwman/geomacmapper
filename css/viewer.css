@@ -1,0 +1,234 @@
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+html, body {
+    font-family: 'Oxygen', sans-serif;
+    font-size: 1em;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color:#FFFFFF;
+    text-shadow: 1px 1px 0 #080808;
+}
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+}
+
+#currentItemName {
+    font-size:1.5em;
+}
+
+.cursorpointer:hover {
+    cursor: pointer;
+}
+
+.navbar .item {
+    padding-top:10px;
+    color:rgba(255,255,255,1);
+    display: inline-block;
+    float:left;
+    background-image:none;
+}
+.drop-down-icon{
+	vertical-align:baseline;
+	width:24px;
+}
+.navbar .right {
+    float:right;
+    vertical-align:top;
+}
+.right{
+  float:right;
+}
+.clear {clear:both;}
+
+.view {
+    background-color: #213F65;
+    background-color: rgba(33, 63, 101, 0.85);
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+    
+}
+
+/*-------------------------*/
+/*    DROP DOWN MENU       */
+/*-------------------------*/
+#menu-region {
+    position:absolute;
+    left:0px;
+    top:54px;
+    width:200px;
+    padding:10px 20px 10px 20px;
+    z-index:901;
+}
+#menu-region ul{list-style: none;padding:0;}
+#menu-region ul li {margin:10px 0;cursor:pointer;padding:5px 8px;}
+#menu-region ul li:hover {background-color: rgba(33, 63, 101, 0.95);}
+
+
+#menu-widget{
+  -moz-transition: all 1s ease;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+  display:inline-block;
+}
+.rotated{
+-webkit-transform: rotate(45deg);
+}
+
+
+#tool-list-region ul{list-style:none;margin:0;}
+#tool-list-region li{
+  float:right;
+  margin:0 5px;
+ /* font-size:1.3em;*/
+  text-shadow: 1px 1px 0 #080808;
+}
+#tool-list-region li:hover{color:#CCCCCC;cursor:pointer;}
+#current-item-name{margin-right:5px;}
+.menu-item:hover{
+  background-color: #213F65;
+  background-color: rgba(33, 63, 101, 0.95);
+}
+#center-region {
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-40%;
+    margin-top:-10%;
+    width:80%;
+    z-index:900;
+}
+#layer-list-region {
+    position:absolute;
+    right:0px;
+    top:54px;
+    max-width:85%;
+    z-index:900;
+}
+
+
+
+/* NAVBAR Hacked heavily from BOOTSTRAP*/
+.navbar {
+  overflow: visible;
+  margin-bottom: 20px;
+  *z-index: 2;
+  min-height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #213F65;
+  background-color: rgba(33, 63, 101, 0.85);
+  border: 1px solid transparent;
+ *zoom: 1;
+  position: fixed;
+  right: 0;
+  left: 0;
+   top: 0;
+  z-index: 1030;
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  font-size: 1.3em;
+}
+.navbar:after {
+  clear: both;
+}
+.navbar .logo { 
+  float: left;
+  padding: 10px 20px 15px 10px;
+  text-shadow: 1px 1px 0 #080808;
+  text-decoration: none;
+  color:#ffffff;
+}
+
+#working{display: inline-block;margin-left:10px;}
+.small{font-size: 0.5em;}
+
+button{
+	vertical-align:middle;
+}
+
+.transparent {
+background-color: rgba(0,0,0,0);
+border-color: rgba(0,0,0,0);
+background-image: none;
+}
+
+#fire-tooltip {
+z-index: 1000;
+position: absolute;
+margin: 5px;
+padding: 5px;
+background-color: #213F65;
+background-color: rgba(33, 63, 101,0.65);
+color: #fff;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+display:none;
+}
+
+/*==========================*/
+/*        Layer List        */
+/*==========================*/
+#layer-list-region ul {list-style:none;padding:0;margin:5px 0;}
+#layer-list-region h4 {margin:0;}
+#basemap-list,#layer-list{margin-bottom:20px;} 
+.span2{width:250px;float:left;}
+
+.header span {float:right;margin-top:20px;}
+.header h3 {float:left;}
+
+.box-content {clear:both;padding-bottom: 20px;}
+.box-content button {font-size:24px;vertical-align: top;}
+
+/*==========================*/
+/*    Geocode Search        */
+/*==========================*/
+#geocode-results-region ul{list-style: none;}
+#geocode-results-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
+#geocode-results-region li:hover {color:#FF0000;}
+#search-textbox{width:90%;font-size:24px;}
+
+/*==========================*/
+/*    Historic Fires        */
+/*==========================*/
+#year-list-region ul{list-style: none;}
+#year-list-region li{float:left;padding: 10px;border: 1px solid #fff;margin: 3px;cursor: pointer;}
+#year-list-region li:hover {color:#FF0000;}
+
+/*==========================*/
+/*        Esri Map          */
+/*==========================*/
+#map{padding:0;height:100%;z-index:-1;overflow:hidden;}
+#map_zoom_slider{position:absolute;top:70px;left:20px;}
+.esriAttribution{display:none; }
+
+/*--------------------------*/
+/* SPINNER USING CSS3       */
+/*--------------------------*/
+
+.spin {
+  -webkit-animation-name: spinnerRotate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes spinnerRotate {
+  from {
+    -webkit-transform:rotate(0deg);
+  }
+  to {
+    -webkit-transform:rotate(360deg);
+  }
+}
+
+

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8" />
+    <title>GeoMacMap</title>
+    <meta name="description" content="Demo app showing how to compose a loosely coupled mapping application using Backbone.Marionette">
+    <meta name="author" content="Dave Bouwman / DTSAgile.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
+    
+    
+    <link href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" rel="stylesheet" type="text/css" >
+    <link rel="stylesheet" type="text/css" href="./css/viewer.css" /> 
+</head>
+<body >
+   
+    <div class="navbar">
+        <a class="logo" href="#">
+            <!-- <img src='./images/js-viewer-logo.png' /> -->
+            <span class='entypo-rocket'></span>
+        </a>
+        <div id="current-item" class="item cursorpointer">
+            <span id="current-item-name"></span>
+            <span id="menu-widget" class="entypo-plus-circled"></span>
+            <span id="feedback" style="display:none">
+                <div id="working" class="entypo-cw spin" ></div>
+                <span id="actions" ></span>
+            </span>
+        </div>
+        <!-- This will contain the legends later on -->
+        <div id="horizontal-legend-region"></div>
+        <!-- These are the tools on the upper right -->
+        <div id="tool-list-region" class="item right"></div>
+    </div>
+
+    <!-- Container for the "Drop Down" List of Views -->
+    <div id="menu-region"  style="display:none;" class="view"></div>
+
+    <!-- Container for the Layer List -->
+    <div id="layer-list-region" style="display:none;" class="view"></div>    
+
+    <div id="fire-tooltip" ></div>
+    <!-- The Map -->
+    <div id="map" ></div>
+
+    <!-- Container for Pseudo-modal center view lists -->
+    <div id="center-region" style="display:none;" class="view" >
+        This will be the center view area<br/>
+        Search, search results and the <br>
+        List of years for the Historic Fires view will use this<br>
+    </div>
+
+    <div id="right-region" style="display:none;" class="view" >
+        This is the right container<br/>
+        We will have charts or Fire Details here <br/>
+        This text is just to take space
+    </div>
+
+    
+
+
+    <!-- ===================================== -->
+    <!-- Templates -->
+    <!-- ===================================== -->
+    <script type="text/template" id="menu-list-item-template">
+        <span><%=name %></span>
+        <div class="right">  
+            <span class="entypo-right-circled"></span>
+        </div>          
+    </script>  
+
+    <script id="tool-template" type="text/template">
+        <span class='<%=iconclass%>' > </span>
+    </script>
+
+
+    <script type="text/template" id="layer-list-template">
+        <div class="header">
+            <h3>Map Layers</h3>
+            <span id="layer-list-close" class="entypo-cancel-circled"></span>
+        </div>
+        <div class="clear"></div>
+        <div class="span2">
+            <h4>operational layers</h4>
+             <div id="layer-list"></div>
+        </div>
+        <div  class="span2">
+            <h4>basemaps</h4>
+            <div id="basemap-list"></div>
+        </div>
+    </script>  
+
+    <script type="text/template" id="layer-item-template">        
+         <input type="checkbox"  <% if(visible) { %> checked <% } %> /> <%= name %>
+    </script>
+
+    <script type="text/template" id="basemap-item-template">        
+        <input type="radio" name="basemaps" <% if(visible) { %> checked <% } %> /> 
+        <span> <%= name %></span>
+    </script>   
+
+    <!-- Search/Geocode Templates -->
+    <script type="text/template" id="search-layout-template">
+        <div class="header">
+            <h3>Address Locator</h3>
+            <span id="search-close" class="entypo-cancel-circled"></span>
+        </div>  
+         <div class="box-content"> 
+            <input type="text" id="search-textbox" placeholder="Enter Address or Place Name...">
+            <button id="search-button"><div id="search-icon" class="entypo-search"></div></button>
+            <div id="geocode-results-region"></div>
+            <div class="clear"></div>
+         </div>
+     </script>
+    
+    <script type="text/template" id="no-locations-template">
+        <p>No results were found. Please try another more specific location</p>
+    </script>
+    
+
+    <script type="text/template" id="location-item-template">        
+          <%=name%>   
+    </script>
+
+    <!-- Historic Fires Selection Templates -->
+    <script type="text/template" id="year-layout-template"> 
+        <div class="header">
+            <h3>Select a Year to View</h3>
+            <span id="years-close" class="entypo-cancel-circled"></span>
+        </div>  
+         <div class="box-content"> 
+            <div id="year-list-region"></div>
+            <div class="clear"></div>
+         </div>
+    </script>
+    <script type="text/template" id="year-item-template">        
+          <%=name%>
+    </script>
+
+    <!-- Libraries -->
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/" type="text/javascript"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/json2.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/underscore-1.4.3.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/backbone-0.9.10.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/backbone.babysitter-0.0.4.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/backbone.wreqr-0.1.0.js"></script>
+    <script type="text/javascript" src="./javascript/libs/marionette/backbone.marionette-1.0.0-rc3.js"></script>
+
+<!-- Application Code -->
+    <script type="text/javascript" src="./javascript/ViewerApp.js"></script>
+    <script type="text/javascript" src="./javascript/NavbarModule.js"></script>
+    <script type="text/javascript" src="./javascript/MenuModule.js"></script>
+    <script type="text/javascript" src="./javascript/LayerListModule.js"></script>
+    <script type="text/javascript" src="./javascript/EsriGeocodeSearchModule.js"></script>  
+    <script type="text/javascript" src="./javascript/HistoricFiresModule.js"></script> 
+    <script type="text/javascript" src="./javascript/CurrentFiresModule.js"></script>
+    <script type="text/javascript" src="./javascript/EsriMapModule.js"></script>
+    <script type="text/javascript" src="./javascript/RouterModule.js"></script>
+    <script type="text/javascript" src="./javascript/FireManagerModule.js"></script>
+    <script type="text/javascript" src="./javascript/FeedbackModule.js"></script>
+    <script type="text/javascript" src="./javascript/FireInfoModule.js"></script>
+  <!-- Configuration and Launch -->
+<script>
+    //TODO: Change to use dojo.addOnLoad(function{}) when we wire in Esri Map
+    //$(function(){
+dojo.require('esri.map');
+dojo.require('esri.layers.FeatureLayer');
+
+dojo.addOnLoad(function(){
+        //create a hash for our options that we will pass into 
+        //the app
+var options = {
+    menuItems: [
+        { name: 'Active Fires', eventToRaise: 'View:CurrentFires' },
+        { name: 'Historic Fires', eventToRaise: 'View:HistoricFires' }
+    ],
+    toolItems: [
+        {name: 'Search', eventToRaise: 'View:Search', iconclass: 'entypo-search'},
+        {name: 'Stats', eventToRaise: 'View:Stats', iconclass: 'entypo-chart-bar'},
+        {name: 'Layer List', eventToRaise: 'View:LayerList', iconclass: 'entypo-map'},
+    ],
+    mapConfig :{
+        initialExtent: { "xmin": -14106000, "ymin": 2834000, "xmax": -6896000, "ymax": 6385000, "spatialReference": { "wkid": 102100 } },
+        basemaps: [
+            {
+                name: 'National Geographic',
+                label:'natgeo',
+                type: 'ArcGISTiledMapServiceLayer',
+                visible: true,
+                url: 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer'
+            },
+            {
+                name: 'Topo Map',
+                label:'topo',
+                type: 'ArcGISTiledMapServiceLayer',
+                visible: false,
+                url: 'http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer'
+            },
+            {
+                name: 'Satellite Imagery',
+                label:'satellite',
+                type: 'ArcGISTiledMapServiceLayer',
+                visible: false,
+                url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+            },
+
+        ],
+        operationalLayers: [
+            {
+                name: 'Red Flag Warnings',
+                url: 'http://svinetfc3.fs.fed.us/ArcGIS_NPSG/rest/services/NPSG/Fire_Watches_Warnings/MapServer',
+                type: 'ArcGISDynamicMapServiceLayer',
+                visibleLayers: [1],
+                visible: true,
+                opacity: 0.8
+            },
+
+            {
+                name: 'MODIS Thermal',
+                url: 'http://wildfire.cr.usgs.gov/ArcGIS/rest/services/geomac_dyn/MapServer',
+                type: 'ArcGISDynamicMapServiceLayer',
+                visibleLayers: [2],
+                visible: true,
+                opacity: 0.8
+            }
+        ] 
+    },
+    currentFiresConfig:{
+        url:'http://wildfire.cr.usgs.gov/ArcGIS/rest/services/geomac_dyn/MapServer',
+        model:
+        {
+            name:'Active Fires',
+            layerId:0,
+            perimeterLayerId:1,
+            defn:''
+        }
+    },
+    historicFiresConfig:{
+        url:'http://wildfire.cr.usgs.gov/ArcGIS/rest/services/geomac_dyn/MapServer',
+        years: [
+            {name:'2013 Fires',  year:2013,layerId:4,  perimeterLayerId:5,  defn:"year_='2013'"},
+            {name:'2012 Fires',  year:2012,layerId:7,  perimeterLayerId:18, defn:"year_='2012'"},
+            {name:'2011 Fires',  year:2011,layerId:8,  perimeterLayerId:18, defn:"year_='2011'"},
+            {name:'2010 Fires',  year:2010,layerId:9,  perimeterLayerId:18, defn:"year_='2010'"},
+            {name:'2009 Fires',  year:2009,layerId:10, perimeterLayerId:18, defn:"year_='2009'"},
+            {name:'2008 Fires',  year:2008,layerId:11, perimeterLayerId:18, defn:"year_='2008'"},
+            {name:'2007 Fires',  year:2007,layerId:12, perimeterLayerId:18, defn:"year_='2007'"},
+            {name:'2006 Fires',  year:2006,layerId:13, perimeterLayerId:18, defn:"year_='2006'"},
+            {name:'2005 Fires',  year:2005,layerId:14, perimeterLayerId:18, defn:"year_='2005'"}
+        ]
+    },
+    appRoot:'marionette-map'
+};
+        gmm.Viewer.start(options);
+    });
+   </script>
+
+</body>
+</html>
