@@ -45,10 +45,32 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 Viewer.vent.on('Map:HideControls',this.hideControls,this);
                 Viewer.vent.on('Map:ShowControls',this.showControls,this);
                 Viewer.vent.on('Map:ShowFires',this.showFires,this);
+                Viewer.vent.on('Map:ShowPerimeters',this.showPerimeters,this);
                 this.initMap(this.config.mapConfig);
             },
+            showPerimeters:function(data){
+              console.log('Caught Map:ShowPerimeters');
+              //data will have a model and url
+                //remove the perimeters if it's in the map
+                var lyr = this.map.getLayer("perimeters");
+                if(lyr){
+                    this.map.removeLayer(lyr);
+                }
+
+              var perimLayer = new esri.layers.ArcGISDynamicMapServiceLayer(data.url,{id:'perimeters'});
+              var defn = [];
+              defn[data.model.perimeterLayerId]=data.model.defn;
+              perimLayer.setLayerDefinitions(defn);
+              var vis = [data.model.perimeterLayerId];
+              perimLayer.setVisibleLayers(vis);
+
+              this.map.addLayer(perimLayer);
+              //we need to create a dynamic map service layer
+              //set the definition query
+              //add it to the map
+              
+            },
             showFires:function(featureArray){
-                
                 //remove the firelayer if it's in the map
                 var lyr = this.map.getLayer("fireLayer");
                 if(lyr){
@@ -72,55 +94,52 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 });
                 //hover handler
                 dojo.connect(fireLayer, "onMouseOver",function(evt){
-                    //raise an event with the attributes so another view can
-                    //handle displaying the details
-                    console.log('Hovering on ' + evt.graphic.attributes['fire_name']);
+                    $('#fire-tooltip').html(evt.graphic.attributes['fire_name'])
+                          .css('top', evt.pageY)
+                          .css('left', evt.pageX)
+                          .show();
+                });
+
+                dojo.connect(fireLayer,"onMouseOut", function(evt){
+                    $('#fire-tooltip').hide();
                 });
                 this.map.addLayer(fireLayer);
-                console.log("Added fireLayer to the map with "+ featureArray.length + " features");
                 Viewer.vent.trigger("Feedback:Hide");
-
-
             },
             hideControls:function(){
             	$('#map_zoom_slider').fadeOut('fast');
             },
             showControls:function(){
-				$('#map_zoom_slider').fadeIn('fast');
+				      $('#map_zoom_slider').fadeIn('fast');
             },
+
             updateFireLayer:function(data){
                 console.log('Map:FireLayer:DataChanged Caught');
                 //do the work!
                 
             },
             centerAt:function(data){
-            	console.log('Map:CenterAt Caught');
-                var lvl = this.map.getLevel();
+              var lvl = this.map.getLevel();
             	if(lvl < 9){
             		data.l = 9;
-		        }else{
+		          }else{
                     data.l = lvl;
-                }
-                this.centerAtAndZoom(data);
-            	
+              }
+              this.centerAtAndZoom(data);
             },
             centerAtAndZoom:function(data){ // assume webmercator
-                console.log('Map:CenterAtAndZoom Caught');
-                console.dir(data);
                 var pt = new esri.geometry.Point({x: data.x, y: data.y,spatialReference: {wkid:102100 } });
                 this.map.centerAndZoom(pt,data.l);
             },
 
             centerAtLatLongAndZoom:function(data){ //assume geographic
                 //we could pass along the SR, or a wkid, but that seems like "leakage" to me...
-                console.log('Map:centerAtLatLongAndZoom Caught');
-                console.dir(data);
                 var pt = new esri.geometry.Point({x: data.x, y: data.y,spatialReference: {wkid:4326 } });
                 this.map.centerAndZoom(pt,data.l);
             },
 
 
-			setLayerVisibility: function (data) {
+			       setLayerVisibility: function (data) {
                 var lyr = this.map.getLayer(data.label);
                 if (lyr) {
                     lyr.setVisibility(data.visible);
@@ -145,7 +164,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 
             initMap: function (mapConfig) {
                 console.log('Map:Controller:initMap');
-
+                //raise an event so other modules can take action when the map has been loaded
+                
                 var initialExtent = new esri.geometry.Extent(mapConfig.initialExtent);
                
                 this.map = new esri.Map("map", {
@@ -164,12 +184,10 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 var center = this.map.geographicExtent.getCenter();
                 var level = this.map.getLevel();
                 var data = {x:center.x, y:center.y, l: level};
-                console.log('EsriMapModule: Extent updated - calling Router:SetUrl with ' + data.x + ' ' +data.y);
                 //raise an event which keeps the map decoupled from the router
                 Viewer.vent.trigger('Router:SetUrl',data);
             },
             initBaseLayers: function (basemaps) {
-                console.log('Map:Controller:initBaseLayers');
                 _.each(basemaps, function(layer){
                     switch(layer.type){
                         case 'ArcGISTiledMapServiceLayer':
@@ -189,7 +207,6 @@ if (!this.gmm || typeof this.gmm !== 'object') {
             },
 
             initOperationalLayers: function (operationalLayers) {
-                console.log('MapModule:Controller:initOperationalLayers');
                 _.each(operationalLayers, function (layer) {
                     switch (layer.type) {
                         case 'ArcGISDynamicMapServiceLayer':
@@ -200,7 +217,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                                 opacity: layer.opacity
                             });
                             lyr.setVisibleLayers(layer.visibleLayers);
-                            console.log(' Added ' + layer.name + ' to the map...');
+                            //console.log(' Added ' + layer.name + ' to the map...');
                             this.map.addLayer(lyr);
                             break;
                         case 'FeatureLayer':
@@ -214,11 +231,11 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                             break;
                     }
                 }, this);
-                console.log('Done adding operational layers to the map');
             }, 
 
             onMapLoad: function (map) {
                 $(window).resize(this.resizeMap);
+                Viewer.vent.trigger('Map:Loaded');
             },
             resizeMap: function () {
                 //resize the map when the browser resizes
@@ -248,61 +265,19 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     }
                   },
                   "fields":[
-                      {
-                         "name":"objectid",
-                         "type":"esriFieldTypeOID",
-                         "alias":"objectid"
-                      },
-                      {
-                         "name":"fire_name",
-                         "type":"esriFieldTypeString",
-                         "alias":"fire_name",
-                         "length":30
-                      },
-                      {
-                         "name":"start_date",
-                         "type":"esriFieldTypeString",
-                         "alias":"start_date",
-                         "length":18
-                      },
-                      {
-                         "name":"start_hour",
-                         "type":"esriFieldTypeString",
-                         "alias":"start_hour",
-                         "length":4
-                      },
-                      {
-                         "name":"location",
-                         "type":"esriFieldTypeString",
-                         "alias":"location",
-                         "length":80
-                      },
-                      {
-                         "name":"inc_type",
-                         "type":"esriFieldTypeString",
-                         "alias":"inc_type",
-                         "length":3
-                      },
-                      {
-                         "name":"cause",
-                         "type":"esriFieldTypeString",
-                         "alias":"cause",
-                         "length":1
-                      },
-                      {
-                         "name":"area_",
-                         "type":"esriFieldTypeDouble",
-                         "alias":"area_"
-                      },
-                      {
-                         "name":"area_meas",
-                         "type":"esriFieldTypeString",
-                         "alias":"area_meas",
-                         "length":10
+                      {"name":"objectid","type":"esriFieldTypeOID","alias":"objectid"},
+                      {"name":"fire_name","type":"esriFieldTypeString","alias":"fire_name","length":30},
+                      {"name":"active","type":"esriFieldTypeString","alias":"active","length":50},
+                      {"name":"start_date","type":"esriFieldTypeString","alias":"start_date","length":18},
+                      {"name":"start_hour","type":"esriFieldTypeString","alias":"start_hour","length":4},
+                      {"name":"location","type":"esriFieldTypeString","alias":"location","length":80},
+                      {"name":"inc_type","type":"esriFieldTypeString","alias":"inc_type","length":3},
+                      {"name":"cause","type":"esriFieldTypeString","alias":"cause","length":1},
+                      {"name":"area_","type":"esriFieldTypeDouble","alias":"area_"},
+                      {"name":"area_meas","type":"esriFieldTypeString","alias":"area_meas","length":10
                       }]
                 }; 
                 return defn;
-
             }
         });
 

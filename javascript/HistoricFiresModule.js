@@ -68,8 +68,10 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 console.log('YearItemClicked: '+ this.model.get('name'));
                 var data ={
                     model:this.model.toJSON(),
-                    url:Mod.controller.url};
+                    url:Mod.controller.url
+                };
                 Viewer.vent.trigger('FireLayer:ConfigChanged', data);
+                Viewer.vent.trigger('Map:ShowPerimeters',data);
                 Viewer.vent.trigger('Navbar:ChangeItemName',this.model.get('name'));
                 //hide the view
                 Mod.controller.hideView();

@@ -29,6 +29,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
 
                 //hook up App events            
                 Viewer.vent.on('View:CurrentFires', this.setCurrentFires, this);
+               
             },
             setCurrentFires:function(){
                 var data = {
@@ -36,6 +37,7 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     url:this.options.url
                 };
                 Viewer.vent.trigger('FireLayer:ConfigChanged', data);
+                Viewer.vent.trigger('Map:ShowPerimeters',data);
                 Viewer.vent.trigger('Navbar:ChangeItemName',this.options.model.name);
                 
             }   

@@ -161,6 +161,20 @@ border-color: rgba(0,0,0,0);
 background-image: none;
 }
 
+#fire-tooltip {
+z-index: 1000;
+position: absolute;
+margin: 5px;
+padding: 5px;
+background-color: #213F65;
+background-color: rgba(33, 63, 101,0.65);
+color: #fff;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+display:none;
+}
+
 /*==========================*/
 /*        Layer List        */
 /*==========================*/

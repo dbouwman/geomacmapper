@@ -43,6 +43,8 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                 //and throw that to the map and let it sort out how to handle things.
                 this.layerUrl = data.url + '/' + data.model.layerId;
                 this.getFeatureIds(this.layerUrl);
+                
+
             },
 
             getFeatureIds: function(url){
@@ -58,17 +60,25 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                         success: this.parseIds,
                         error: function (jqXHR, status) {
                             console.log('Error loading featureIds...');
-                        }
+                            alert("Error accessing Geomac service " + status);
+                        },
+                        complete: this.getFeatureIdsComplete
                 },this);
             },
+            getFeatureIdsComplete: function(jqXHR,status){
+                console.log('GetFeautureIds completed with status ' + status);
+            },
             parseIds: function(data, status, jqXHR) {
+                
                 //break the id's into batches of 200, and make iterative requests
                 //accumulating the features into an array
-                var i, j, temparray, chunk = 200;
+                console.log('Status:'+ status);
+                var i, j, temparray, chunk = 150;
                 this.totalBatches = Math.ceil(data.objectIds.length / chunk);
                 console.log('Queried Layer and got ' + data.objectIds.length + ' objectIds ... Will fetch in ' + this.totalBatches + ' batches of ' + chunk);
                 for (i = 0, j = data.objectIds.length; i < j; i += chunk) {
-                    console.log(' requesting chunk ' + i);
+                    //console.log(' requesting chunk ' + i);
+                    Viewer.vent.trigger('Feedback:UpdateMessage','Requesting data batch '+ (i / chunk) + ' of ' + this.totalBatches);
                     temparray = data.objectIds.slice(i, i + chunk);
                     this.getFeatures(temparray);
                 }
@@ -85,11 +95,12 @@ if (!this.gmm || typeof this.gmm !== 'object') {
                     success: this.parseFeatures,
                     error: function (jqXHR, status) {
                         console.log('Error loading features...');
+                        alert("Error accessing Geomac service " + status);
                     }
                 },this);
             },
             parseFeatures: function(data,status,jxXHR){
-                 console.log('  fetched set of features  ' + data.features.length);
+                // console.log('  fetched set of features  ' + data.features.length);
                 //union the new features
                 this.featureSet = _.union(this.featureSet, data.features);
                 this.totalBatches -=1;
